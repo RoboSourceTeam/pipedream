@@ -1,0 +1,155 @@
+import app from "../../avinode.app.mjs";
+
+export default {
+  key: "avinode-create-empty-leg",
+  name: "Create Empty Leg",
+  description:
+    "Create an empty leg listing. [See the documentation](https://developer.avinodegroup.com/reference/createemptyleg)",
+  version: "0.0.1",
+  type: "action",
+  annotations: {
+    destructiveHint: false,
+    openWorldHint: true,
+    readOnlyHint: false,
+  },
+  props: {
+    app,
+    startDate: {
+      type: "string",
+      label: "Start date",
+      description: "Start date-time for the empty leg (ISO 8601)",
+    },
+    endDate: {
+      type: "string",
+      label: "End date",
+      description: "End date-time for the empty leg (ISO 8601)",
+    },
+    aircraftCategory: {
+      type: "string",
+      label: "Aircraft category",
+      description: "Lift category (for example Midsize jet)",
+      optional: true,
+    },
+    aircraftType: {
+      type: "string",
+      label: "Aircraft type",
+      description: "Specific aircraft type name",
+      optional: true,
+    },
+    aircraftTail: {
+      type: "string",
+      label: "Aircraft tail",
+      description: "Tail number for the lift",
+      optional: true,
+    },
+    startAirportIcao: {
+      type: "string",
+      label: "Start airport ICAO",
+      description: "Origin airport ICAO code",
+      optional: true,
+    },
+    startAirportIata: {
+      type: "string",
+      label: "Start airport IATA",
+      description: "Origin airport IATA code",
+      optional: true,
+    },
+    startAirportFaa: {
+      type: "string",
+      label: "Start airport FAA",
+      description: "Origin airport FAA code",
+      optional: true,
+    },
+    endAirportIcao: {
+      type: "string",
+      label: "End airport ICAO",
+      description: "Destination airport ICAO code",
+      optional: true,
+    },
+    endAirportIata: {
+      type: "string",
+      label: "End airport IATA",
+      description: "Destination airport IATA code",
+      optional: true,
+    },
+    endAirportFaa: {
+      type: "string",
+      label: "End airport FAA",
+      description: "Destination airport FAA code",
+      optional: true,
+    },
+    published: {
+      type: "boolean",
+      label: "Published",
+      description: "Whether the empty leg is published in the marketplace",
+      optional: true,
+      default: false,
+    },
+    sellerMessage: {
+      type: "string",
+      label: "Seller message",
+      description: "Message shown to potential buyers",
+      optional: true,
+    },
+    sellerVerified: {
+      type: "boolean",
+      label: "Seller verified",
+      description: "Whether the seller verified this empty leg",
+      optional: true,
+      default: false,
+    },
+    sellerPrice: {
+      type: "string",
+      label: "Seller price",
+      description: "Seller-listed price",
+      optional: true,
+    },
+    sellerPriceCurrency: {
+      type: "string",
+      label: "Seller price currency",
+      description: "ISO currency code for seller price",
+      optional: true,
+    },
+  },
+  async run({ $ }) {
+    const {
+      startDate,
+      endDate,
+      aircraftCategory,
+      aircraftType,
+      aircraftTail,
+      startAirportIcao,
+      startAirportIata,
+      startAirportFaa,
+      endAirportIcao,
+      endAirportIata,
+      endAirportFaa,
+      published,
+      sellerMessage,
+      sellerVerified,
+      sellerPrice,
+      sellerPriceCurrency,
+    } = this;
+    const body = await this.app.createEmptyLeg({
+      $,
+      startDate,
+      endDate,
+      aircraftCategory,
+      aircraftType,
+      aircraftTail,
+      startAirportIcao,
+      startAirportIata,
+      startAirportFaa,
+      endAirportIcao,
+      endAirportIata,
+      endAirportFaa,
+      published,
+      sellerMessage,
+      sellerVerified,
+      sellerPrice,
+      sellerPriceCurrency,
+    });
+    $.export("$summary", "Empty leg created in Avinode");
+    return body;
+  },
+};
